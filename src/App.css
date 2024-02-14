@@ -1,0 +1,29 @@
+.App {
+  text-align: center;
+}
+.white-bg1 {
+  background-color: aliceblue !important;
+}
+.white-bg2 {
+  background-color: rgb(224, 233, 241) !important;
+}
+.white-bg3 {
+  background-color: rgb(190, 201, 211) !important;
+}
+.white-bg4 {
+  background-color: rgb(149, 162, 174) !important;
+}
+.txt-color1 {
+  color: black !important;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}

@@ -1,0 +1,237 @@
+.chat-area-container {
+    height: 90vh;
+    width: 90vw;
+    display: flex;
+    border-radius: 30px;
+    background-color: rgb(42, 45, 56);
+}
+.chat-area-container-phone{
+    height: 95vh;
+    width: 95vw;
+    display: flex;
+    border-radius: 30px;
+    background-color: rgb(42, 45, 56);
+}
+
+.contact-container {
+    flex: 0.3;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    overflow-x: hidden;
+}
+.contact-container-phone {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.contact-header {
+    flex: 0.1;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px; 
+}
+
+.contact-items {
+    flex: 0.9;
+    background-color: rgb(39, 43, 56);
+    margin: 10px;
+    border-radius: 20px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+.account-info{
+    min-width: 200px;
+}
+
+/* Scroll Bar */
+.contact-items::-webkit-scrollbar {
+    width: 10px;
+    /* width of the entire scrollbar */
+}
+
+.contact-items::-webkit-scrollbar-track {
+    background: rgb(53, 57, 76);
+    /* color of the tracking area */
+    border-radius: 10px;
+}
+
+.contact-items::-webkit-scrollbar-thumb {
+    background-color: rgb(146, 146, 157);
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+
+}
+
+.contact-item {
+    background-color: rgb(42, 45, 56);
+    margin: 10px;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    display: flex;
+    gap: 30px;
+}
+
+.contact-img-icon {
+    background-color: rgb(11, 38, 61);
+    padding: 10px 20px;
+    border-radius: 100%;
+}
+
+.selectedUser {
+    background-color: rgb(57, 62, 77);
+
+}
+
+
+
+
+.text-container {
+    flex: 0.7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    padding-bottom: 10px;
+    margin: 15px;
+}
+.text-container-phone {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    padding-bottom: 10px;
+    margin: 15px;
+}
+
+.text-header {
+    flex: 0.1;
+    background-color: rgb(51, 54, 66);
+    width: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+    gap: 20px;
+}
+
+.message-area {
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(36, 39, 52);
+    margin: 10px 0px;
+    border-radius: 20px;
+    gap: 10px;
+    padding: 20px;
+    width: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    /* overflow-y: hidden; */
+}
+
+.message-area-no-chat {
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(36, 39, 52);
+    margin: 10px 0px;
+    border-radius: 20px;
+    gap: 10px;
+    padding: 20px;
+    width: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.message-area::-webkit-scrollbar {
+    width: 10px;
+    /* width of the entire scrollbar */
+
+}
+
+.message-area::-webkit-scrollbar-track {
+    background: rgb(176, 183, 193);
+    /* color of the tracking area */
+    border-radius: 10px;
+}
+
+.message-area::-webkit-scrollbar-thumb {
+    background-color: rgb(51, 66, 92);
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+
+}
+
+.send-chat {
+    display: flex;
+    justify-content: flex-end;
+    width: auto;
+    padding: 5px;
+
+}
+
+.recive-chat {
+    display: flex;
+    justify-content: flex-start;
+    padding: 5px;
+    gap: 10px;
+}
+
+.recive-chat-content {
+    background-color: rgb(41, 54, 66);
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 65%;
+    text-align: right;
+}
+
+.send-chat-content {
+    background-color: rgb(41, 54, 66);
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 65%;
+    text-align: right;
+}
+
+.text-area {
+    flex: 0.1;
+    background-color: rgb(51, 54, 66);
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+    border-radius: 20px;
+    width: 100%;
+
+}
+
+.input-text-content {
+    background-color: rgb(51, 54, 66);
+    outline: none;
+    width: 100%;
+
+}
+
+.no-message-img {
+    width: 40%;
+}
+
+.welcome-page {
+    flex: 0.7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
