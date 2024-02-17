@@ -1,3 +1,4 @@
+const { io } = require("../index");
 const groupChatModel = require("../Models/groupChatModel");
 
 const createGroup = async (request, response) => {
@@ -40,28 +41,67 @@ const addUserInAgroup = async (request, response) => {
   }
 };
 
-const sendMessageInAGroup = async (request , response) => {
+const sendMessageInAGroup = async (request, response) => {
   try {
-    const {userId , message , groupId} = request.body;
+    const { userId, message, groupId } = request.body;
     const groupData = await groupChatModel.findById(groupId);
-    if(groupData) {
-      if(groupData.users.includes(userId)) {
-        groupData.groupChat.push({message , _id: userId});
+    if (groupData) {
+      if (groupData.users.includes(userId)) {
+        groupData.groupChat.push({ message, _id: userId });
         await groupData.save();
-        return response.status(200).json({message : "Message sent successfull"});
-      }
-      else {
-        return response.status(400).json({message : "Message sent faild"});
 
+        io.on("connection", (socket) => {
+          socket.on(`group-message-${groupId}`, (data) => {
+            console.log(data);
+          });
+        });
+
+        return response
+          .status(200)
+          .json({ message: "Message sent successfull" });
+      } else {
+        return response.status(400).json({ message: "Message sent faild" });
       }
     }
-    return response.status(400).json({message : "Group Not Found"});
 
+    return response.status(400).json({ message: "Group Not Found" });
   } catch (error) {
     console.log(error);
-    return response.status(400).json({message : "sendMessageInAGroup"});
-    
+    return response.status(400).json({ message: "sendMessageInAGroup" });
   }
-}
+};
 
-module.exports = {createGroup , addUserInAgroup , sendMessageInAGroup}
+const getGroupMessage = async (request, response) => {
+  try {
+    const { groupId, userId } = request.body;
+    const groupData = await groupChatModel.findById(groupId);
+    if (groupData && groupData.users.includes(userId)) {
+      return response.status(200).json({ data: groupData.groupChat });
+    } else {
+      return response
+        .status(400)
+        .json({ message: "User Not Present in this group" });
+    }
+  } catch (error) {
+    console.log(error);
+    return response.status(400).json({ message: "Group Not Found" });
+  }
+};
+
+const getAllAvailibleGroup = async (request, response) => {
+  try {
+    const groupData = await groupChatModel.find().select("-groupChat -users");
+    return response.status(200).json({ data: groupData });
+  } catch (error) {
+    console.log("getAllAvailibleGroup");
+    return response.status(400).json({ message: "Server Error" });
+  }
+};
+
+module.exports = {
+  getAllAvailibleGroup,
+  createGroup,
+  addUserInAgroup,
+  sendMessageInAGroup,
+  getGroupMessage,
+};

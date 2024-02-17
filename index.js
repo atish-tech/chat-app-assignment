@@ -37,7 +37,7 @@ const io = socket(server, {
     origin: "*",
     credentials: true,
   },
-});
+}); 
 
 global.onlineUser = new Map();
 const users = {};
@@ -56,6 +56,10 @@ io.on("connection", (socket) => {
     // console.log("typing" , data);
   });
 
+  // socket.on("group-message" , (data) => {
+  //   socket.broadcast.emit(`${data.groupId}` , data);
+  // })
+
   socket.on("send-message", (data) => {
     const reciverId = users[data.to];
     if (reciverId) {
@@ -69,3 +73,5 @@ io.on("connection", (socket) => {
     console.log(users);
   });
 });
+
+module.exports = {io}
