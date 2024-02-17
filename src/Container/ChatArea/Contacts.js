@@ -10,19 +10,29 @@ import { changeTheam } from "../../Features/Theam/toggleSlice";
 import { useNavigate } from "react-router-dom";
 import ContactSkelton from "./Skelton/ContactSkelton";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from "@mui/icons-material/Group";
+import { UserList } from "../../Component/UserList";
+import { GroupList } from "../../Component/GroupList";
 
-const Contacts = ({ data, handelUserChat }) => {
+const Contacts = ({ data, handelUserChat, handelGroupChat ,  groupList }) => {
   const navigateTo = useNavigate();
   const toogleTheam = useSelector((state) => state.toogle.value);
   const dispatch = useDispatch();
   const [currentUser, setCurrentUser] = useState(undefined);
   const [accountInfo, setAccountInfo] = useState(undefined);
+  const [groupChatPersonalChat, setGroupChatPersonalChat] = useState(false);
+  const [currentGroup, setCurrentGroup] = useState(undefined);
 
   // Set Current contact
   const changeCurrentChat = (item, index) => {
     handelUserChat(item);
     setCurrentUser(index);
+  };
+
+  // Set Current group
+  const changeGroupChat = (item, index) => {
+    setCurrentGroup(index);
+    handelGroupChat(item)
   };
 
   // If user Not login
@@ -94,12 +104,12 @@ const Contacts = ({ data, handelUserChat }) => {
           </Popover>
         </div>
         <div className="flex">
-            {/* Personal chat icon */}
-          <IconButton>
+          {/* Personal chat icon */}
+          <IconButton onClick={() => setGroupChatPersonalChat(false)}>
             <LockPersonIcon fontSize="large" />
           </IconButton>
           {/* Group Chat Icon */}
-          <IconButton>
+          <IconButton onClick={() => setGroupChatPersonalChat(true)}>
             <GroupIcon fontSize="large" />
           </IconButton>
           {/* toggle button */}
@@ -122,40 +132,21 @@ const Contacts = ({ data, handelUserChat }) => {
       </div>
 
       {/* All Contact container */}
-      <div className={`contact-items ${toogleTheam ? " white-bg1" : ""}`}>
-        {data.length === undefined ? (
-          <ContactSkelton />
-        ) : (
-          data.map((item, index) => {
-            return (
-              <>
-                <div
-                  onClick={() => changeCurrentChat(item, index)}
-                  className={`contact-item ${
-                    index === currentUser && "selectedUser"
-                  } 
-                                        ${
-                                          toogleTheam && "txt-color1 white-bg2"
-                                        } 
-                                        ${
-                                          index === currentUser &&
-                                          toogleTheam &&
-                                          "white-bg4"
-                                        }`}
-                  key={index}
-                >
-                  <p
-                    className={`contact-img-icon ${toogleTheam && "white-bg3"}`}
-                  >
-                    {item.name[0].toUpperCase()}
-                  </p>
-                  <p>{item.name}</p>
-                </div>
-              </>
-            );
-          })
-        )}
-      </div>
+      {groupChatPersonalChat ? (
+        <GroupList
+          data={groupList}
+          currentGroup={currentGroup}
+          changeGroupChat={changeGroupChat}
+          toogleTheam={toogleTheam}
+        />
+      ) : (
+        <UserList
+          changeCurrentChat={changeCurrentChat}
+          toogleTheam={toogleTheam}
+          currentUser={currentUser}
+          data={data}
+        />
+      )}
     </div>
   );
 };

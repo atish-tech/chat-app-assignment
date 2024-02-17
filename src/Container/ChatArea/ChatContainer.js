@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ChatArea.css";
-import { allUserRoute, host } from "../../Utils/ApiRoutes";
+import { allUserRoute, getGroupListRoute, host } from "../../Utils/ApiRoutes";
 import { Welcome } from "./Welcome";
 import { TextContainer } from "./TextContainer";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ import MediaQuery from "react-responsive";
 import { TextContainerPhone } from "./Phone/TextContainerPhone";
 import ContactsPhone from "./Phone/ContactsPhone";
 import GetAllUsers from "../AllUser/GetAllUsers";
+import axios from "axios";
+import { GroupText } from "../../Component/GroupText";
 
 const ChatContainer = () => {
   const navigateTo = useNavigate();
@@ -19,7 +21,9 @@ const ChatContainer = () => {
   const [contact, setContact] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
-
+  const [groupList, setGroupList] = useState([]);
+  const [personalChat, setPersonalChat] = useState(false);
+  const [groupChat, setGroupChat] = useState(false);
   const toogleTheam = useSelector((state) => state.toogle.value);
 
   // phone view port code
@@ -32,6 +36,16 @@ const ChatContainer = () => {
   const discunnectedUser = () => {
     console.log("..........");
     socket.current.emit("disconnectServer", currentUser.data._id);
+  };
+
+  // Group List
+  const getGroupList = async (id) => {
+    try {
+      const response = await axios.get(getGroupListRoute);
+      setGroupList([...response.data.data]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // get all contact
@@ -63,6 +77,7 @@ const ChatContainer = () => {
         setContact(data);
       })
       .catch((error) => console.log(error));
+    getGroupList(userData.data._id);
   }, []);
 
   // add current user to socket server
@@ -79,6 +94,14 @@ const ChatContainer = () => {
   const handelUserChat = (chat) => {
     setCurrentChat(chat);
     setUserContact(false);
+    setPersonalChat(true);
+    setGroupChat(false);
+  };
+  // change group chat
+  const handelGroupChat = (chat) => {
+    setGroupChat(true);
+    setPersonalChat(false);
+    setCurrentChat(chat);
   };
 
   return (
@@ -113,14 +136,23 @@ const ChatContainer = () => {
             <Contacts
               discunnectedUser={discunnectedUser}
               data={contact}
+              groupList={groupList}
               handelUserChat={handelUserChat}
+              handelGroupChat={handelGroupChat}
             />
           )}
           {/* Chat Area 0.7 */}
           {currentChat === undefined ? (
             <Welcome />
           ) : (
-            <TextContainer currentChat={currentChat} socket={socket} />
+            <>
+              {personalChat && (
+                <TextContainer currentChat={currentChat} socket={socket} />
+              )}
+              {groupChat && (
+                <GroupText currentChat={currentChat} socket={socket} />
+              )}
+            </>
           )}
         </div>
       </MediaQuery>
