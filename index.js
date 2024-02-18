@@ -37,11 +37,14 @@ const io = socket(server, {
     origin: "*",
     credentials: true,
   },
-}); 
+  pingTimeOut: 6000,
+});
+
+const { addUser } = require("./Config/userGroup");
 
 global.onlineUser = new Map();
 const users = {};
-
+const groups = {};
 io.on("connection", (socket) => {
   global.chatSocket = socket;
 
@@ -51,14 +54,29 @@ io.on("connection", (socket) => {
     console.log(users);
   });
 
+  // group chat
+  socket.on("join", ({ group }) => {
+    groups[group] = socket.id;
+
+    socket.join(group);
+
+    socket.on("send-group-message", ({ message , group}) => {
+      io.to(groups[group]).emit("recive-group-message", {
+        group,
+        message,
+      });
+    });
+  });
+
   socket.on("typing", (data) => {
     socket.to(users[data.to]).emit("typing", data.to);
     // console.log("typing" , data);
   });
 
-  // socket.on("group-message" , (data) => {
-  //   socket.broadcast.emit(`${data.groupId}` , data);
-  // })
+  socket.on("group-message", (data) => {
+    console.log(data.groupId);
+    socket.emit(`recive-message`, data);
+  });
 
   socket.on("send-message", (data) => {
     const reciverId = users[data.to];
@@ -73,5 +91,3 @@ io.on("connection", (socket) => {
     console.log(users);
   });
 });
-
-module.exports = {io}

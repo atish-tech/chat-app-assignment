@@ -1,4 +1,3 @@
-const { io } = require("../index");
 const groupChatModel = require("../Models/groupChatModel");
 
 const createGroup = async (request, response) => {
@@ -49,13 +48,6 @@ const sendMessageInAGroup = async (request, response) => {
       if (groupData.users.includes(userId)) {
         groupData.groupChat.push({ message, _id: userId });
         await groupData.save();
-
-        io.on("connection", (socket) => {
-          socket.on(`group-message-${groupId}`, (data) => {
-            console.log(data);
-          });
-        });
-
         return response
           .status(200)
           .json({ message: "Message sent successfull" });
