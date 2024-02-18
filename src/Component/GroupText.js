@@ -36,6 +36,8 @@ export const GroupText = ({ currentChat, socket }) => {
       };
       const response = await axios.post(getGroupDataRoute, body);
       setGroupChat([...response.data.data]);
+      // join in a group
+      socket.current.emit("join" , ({group : body.groupId}));
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +56,7 @@ export const GroupText = ({ currentChat, socket }) => {
         message: msg,
       };
 
-      socket.current.emit(`group-message-${currentChat._id}`, body);
+      socket.current.emit(`send-group-message`,( {message : msg , group: body.groupId}));
 
       setMsg("");
 
@@ -64,8 +66,10 @@ export const GroupText = ({ currentChat, socket }) => {
 
 //   recive message from socket
   useEffect(() => {
-    socket.current.on(`${currentChat._id}` , (data) => {
-        // groupChat.push(data);
+    socket.current.on(`recive-group-message` , (data) => {
+        if(data.group === currentChat._id) {
+          setGroupChat((prev) => [...prev , {message : data.message}])
+        }
     })
   } , [socket])
 

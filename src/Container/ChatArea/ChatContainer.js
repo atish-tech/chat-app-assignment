@@ -107,7 +107,7 @@ const ChatContainer = () => {
   return (
     <>
       {/* Phone View port */}
-      <MediaQuery maxWidth={800}>
+      {/* <MediaQuery maxWidth={800}>
         <div
           className={`chat-area-container-phone ${
             toogleTheam ? " white-bg2" : ""
@@ -124,10 +124,10 @@ const ChatContainer = () => {
             />
           )}
         </div>
-      </MediaQuery>
+      </MediaQuery> */}
 
       {/* Desktop view port */}
-      <MediaQuery minWidth={801}>
+      {/* <MediaQuery minWidth={801}> */}
         <div
           className={`chat-area-container ${toogleTheam ? " white-bg2" : ""}`}
         >
@@ -155,7 +155,7 @@ const ChatContainer = () => {
             </>
           )}
         </div>
-      </MediaQuery>
+      {/* </MediaQuery> */}
     </>
   );
 };
